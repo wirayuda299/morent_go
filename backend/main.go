@@ -54,31 +54,16 @@ func corsMiddleware(next http.Handler) http.Handler {
 	})
 }
 
-func recoveryMiddleware(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		defer func() {
-			if err := recover(); err != nil {
-				log.Printf("🔥 Panic Recovered: %v", err)
-				http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-			}
-		}()
-		next.ServeHTTP(w, r)
-	})
-}
+
 
 func initDB() (*pgxpool.Pool, error) {
 	var conn *pgxpool.Pool
 	var err error
-
-	for i := 0; i < 5; i++ {
-		conn, err = pgxpool.New(context.Background(), os.Getenv("DATABASE_URL"))
+conn, err = pgxpool.New(context.Background(), os.Getenv("DATABASE_URL"))
 		if err == nil {
 			fmt.Println("✅ Database connected successfully")
 			return conn, nil
 		}
-		fmt.Println("⏳ Retrying database connection...")
-		time.Sleep(2 * time.Second)
-	}
 
 	return nil, fmt.Errorf("failed to connect to database: %w", err)
 }
@@ -86,7 +71,6 @@ func initDB() (*pgxpool.Pool, error) {
 func setupMiddleware(router *mux.Router) {
 	router.Use(securityMiddleware)
 	router.Use(corsMiddleware)
-	router.Use(recoveryMiddleware)
 }
 
 func main() {
