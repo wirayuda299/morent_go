@@ -1,6 +1,7 @@
 import { api } from "@/lib/axios";
 import { Car } from "@/types";
 import { auth } from "@clerk/nextjs/server";
+import { log } from "console";
 
 export async function getAllCars(sort: string = "popular") {
   try {
@@ -10,6 +11,7 @@ export async function getAllCars(sort: string = "popular") {
         Authorization: "Bearer " + (await getToken()),
       },
     });
+    log("GET ALL CARS", res);
     return res.data;
   } catch (error) {
     throw error;
@@ -24,6 +26,8 @@ export async function getAvailableCars() {
         Authorization: "Bearer " + (await getToken()),
       },
     });
+
+    log("GET AVAILABLE CARS", res);
     return res.data;
   } catch (error) {
     console.info(error);
@@ -39,6 +43,8 @@ export async function getFeaturedCategories() {
         Authorization: "Bearer " + (await getToken()),
       },
     });
+
+    log("GET FEATURED CATEGORIES", res);
     return res.data;
   } catch (error) {
     console.info(error);
@@ -76,6 +82,9 @@ export async function searchCar(payload: SearchPayload): Promise<Car[]> {
         Authorization: "Bearer " + payload.token,
       },
     });
+
+    log("SEARCH CARS:" + params.toString(), res);
+
     return res.data;
   } catch (e) {
     throw e;

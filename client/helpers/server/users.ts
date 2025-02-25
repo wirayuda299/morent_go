@@ -1,9 +1,12 @@
 import { api } from "@/lib/axios";
 import { auth } from "@clerk/nextjs/server";
+import { log } from "console";
 
 export async function getAllUsers() {
   try {
     const users = await api.get("/users/find-all");
+
+    log("GET ALL USERS", users);
     return users;
   } catch (error) {
     throw error;
@@ -18,6 +21,7 @@ export async function getUserTotalRental() {
         Authorization: "Bearer " + (await getToken()),
       },
     });
+    log("GET USER TOTAL RENTAL ", users);
     return users.data;
   } catch (error) {
     throw error;
@@ -44,6 +48,7 @@ export async function GetUserRecentBooking(): Promise<Rental[]> {
       },
     });
 
+    log("GET USER RECENT BOOKING", res);
     return res.data;
   } catch (error) {
     throw error;

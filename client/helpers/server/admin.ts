@@ -1,5 +1,6 @@
 import { api } from "@/lib/axios";
 import { auth } from "@clerk/nextjs/server";
+import { log } from "console";
 
 export async function getTotalRevenues() {
   try {
@@ -11,6 +12,7 @@ export async function getTotalRevenues() {
         Role: sessionClaims?.metadata.role,
       },
     });
+    log("GET TOTAL REVENUES ", res);
     return res.data;
   } catch (error) {
     throw error;
@@ -26,6 +28,9 @@ export async function getActiveRentals() {
         Role: sessionClaims?.metadata.role,
       },
     });
+
+    log("GET ACTIVE RENTALS ", res);
+
     return res.data;
   } catch (error) {
     throw error;
@@ -41,6 +46,8 @@ export async function getTotalCustomers() {
         Role: sessionClaims?.metadata.role,
       },
     });
+
+    log("GET TOTAL CUSTOMERS", res);
     return res.data;
   } catch (error) {
     throw error;
