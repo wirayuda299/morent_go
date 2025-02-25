@@ -11,7 +11,7 @@ export default async function RecentBookings() {
 
   return (
     <TabsContent value={"bookings"} className="space-y-4 w-full">
-      {recentBookings.length < 1 ? (
+      {recentBookings && recentBookings?.length < 1 ? (
         <div className="flex flex-col items-center justify-center py-12 text-center">
           <div className="rounded-full bg-muted p-6 mb-6">
             <Car className="w-12 h-12 text-muted-foreground" />
@@ -28,20 +28,20 @@ export default async function RecentBookings() {
       ) : (
         <>
           <h2 className="text-2xl font-bold mb-4">Recent Bookings</h2>
-          {recentBookings.length > 0 && (
+          {recentBookings && recentBookings?.length > 0 && (
             recentBookings.map(book => (
-              <Card className="w-full" key={book.rental_id}>
+              <Card className="w-full" key={book?.rental_id}>
                 <CardContent className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-6 gap-4">
                   <div className="space-y-1">
-                    <h3 className="font-semibold">{book.car_name}</h3>
+                    <h3 className="font-semibold">{book?.car_name}</h3>
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
                       <Clock className="w-4 h-4" />
-                      {new Date(book.pickup_date).toLocaleDateString() + " - " + new Date(book.return_date).toLocaleDateString()}
+                      {new Date(book?.pickup_date).toLocaleDateString() + " - " + new Date(book?.return_date).toLocaleDateString()}
                     </div>
                   </div>
                   <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                    <Badge className="capitalize" variant={book.status === "paid" ? "secondary" : "default"}>{book.status}</Badge>
-                    <span className="font-semibold">{formatPrice(book.total_price)}</span>
+                    <Badge className="capitalize" variant={book?.status === "paid" ? "secondary" : "default"}>{book?.status}</Badge>
+                    <span className="font-semibold">{formatPrice(book?.total_price)}</span>
                   </div>
                 </CardContent>
               </Card>

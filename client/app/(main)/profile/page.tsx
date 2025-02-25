@@ -16,7 +16,6 @@ export default async function ProfilePage() {
   const user = await currentUser()
   const totalRentals = await getUserTotalRental()
 
-
   return (
     <div className="container mx-auto space-y-8 min-h-screen">
       <div className="flex flex-col w-full md:flex-row gap-8 items-start">
