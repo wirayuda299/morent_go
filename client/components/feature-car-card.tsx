@@ -14,8 +14,7 @@ export default function FeatureCarCard({ category }: { category: string }) {
               "/placeholder.svg"
             }
             alt={category}
-            layout="fill"
-            objectFit="cover"
+            fill
             className="transition-all duration-300 group-hover:opacity-75"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-50"></div>
