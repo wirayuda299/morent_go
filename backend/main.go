@@ -97,7 +97,7 @@ func main() {
 
     server := &http.Server{
         Handler:      router,
-        Addr:         "127.0.0.1:" + os.Getenv("PORT"),
+        Addr:         ":" + os.Getenv("PORT"),
         WriteTimeout: 20 * time.Second,
         ReadTimeout:  15 * time.Second,
         IdleTimeout:  60 * time.Second, // Set Idle timeout
