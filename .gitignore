@@ -1,0 +1,42 @@
+# Ignore all environment files
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+.env.*
+
+# Ignore node_modules (for frontend if using Node.js)
+node_modules/
+
+# Ignore build and output files
+dist/
+build/
+out/
+
+# Ignore dependencies and compiled files (for Golang backend)
+vendor/
+bin/
+*.exe
+*.out
+*.o
+
+# Ignore frontend-specific cache files
+.next/  # Next.js cache
+.nuxt/  # Nuxt.js cache
+.vite/  # Vite cache
+.DS_Store # macOS system file
+
+# Ignore backend logs and caches
+logs/
+*.log
+*.lock
+coverage/
+*.db
+
+# Ignore IDE and editor configs
+.vscode/
+.idea/
+*.swp
+*.swo
+
