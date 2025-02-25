@@ -64,7 +64,7 @@ func setupMiddleware(router *mux.Router) {
 
 func main() {
 
-	clerk.SetKey("sk_test_640pc1eWedoqrNT9LvqH77Mx0p6HzIEf7fapyWDoIx")
+	clerk.SetKey(os.Getenv("CLERK_SECRET_KEY"))
 	if err := godotenv.Load(); err != nil {
 		log.Println("⚠️ Warning: .env file not found, using system environment variables.")
 	}
