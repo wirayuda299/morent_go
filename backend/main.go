@@ -86,7 +86,7 @@ func main() {
 
 	server := &http.Server{
 		Handler:      router,
-		Addr:         "127.0.0.1:8000",
+		Addr:         "127.0.0.1:"+os.Getenv("PORT"),
 		WriteTimeout: 20 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}
