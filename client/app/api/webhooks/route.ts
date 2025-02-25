@@ -5,7 +5,7 @@ import { headers } from "next/headers";
 import { WebhookEvent } from "@clerk/nextjs/server";
 
 export async function POST(req: Request) {
-  const SIGNING_SECRET = process.env.SIGNING_SECRET;
+  const SIGNING_SECRET = "whsec_g1oW5Pp3+EC7Y0Zi+VNaPWEWQq7/jT2t";
 
   if (!SIGNING_SECRET) {
     return new Response("Error: SIGNING_SECRET is missing", { status: 500 });
