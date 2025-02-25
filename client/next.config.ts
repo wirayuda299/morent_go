@@ -13,7 +13,7 @@ const nextConfig: NextConfig = {
   },
   env: {
     CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
-    SIGNIN_SECRET: process.env.SIGNIN_SECRET,
+    SIGNING_SECRET: process.env.SIGNING_SECRET,
   },
 };
 
