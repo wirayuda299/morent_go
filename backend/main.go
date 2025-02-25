@@ -1,6 +1,7 @@
 package main
 
 import (
+	"backend/helper"
 	"backend/routes"
 	"context"
 	"fmt"
@@ -88,7 +89,9 @@ func main() {
 
     router := mux.NewRouter().StrictSlash(true)
     setupMiddleware(router)
-
+    router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+        helper.EncodeResponse(w, "hello from server", nil)
+    })
     routes.RegisterUserRoute(conn, router)
     routes.RegisterCloudinaryRoute(conn, router)
     routes.RegisterCarRoute(conn, router)

@@ -19,7 +19,7 @@ export interface ActionResponse {
 
 export async function createUser(id: string) {
   try {
-    await fetch(`http://localhost:8000/users/create`, {
+    await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/create`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
