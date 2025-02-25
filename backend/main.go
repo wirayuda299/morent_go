@@ -32,7 +32,13 @@ func securityMiddleware(next http.Handler) http.Handler {
 func corsMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		headers := w.Header()
-		headers.Set("Access-Control-Allow-Origin", os.Getenv("CLIENT_URL"))
+
+		origin := os.Getenv("CLIENT_URL")
+		if origin == "" {
+			origin = "https://yourproductiondomain.com" // Fallback untuk production
+		}
+
+		headers.Set("Access-Control-Allow-Origin", origin)
 		headers.Set("Access-Control-Allow-Methods", "OPTIONS, GET, POST, PUT, DELETE")
 		headers.Set("Access-Control-Allow-Headers", "Content-Type, Authorization, Origin, Accept, X-Requested-With")
 		headers.Set("Access-Control-Allow-Credentials", "true")
@@ -48,26 +54,47 @@ func corsMiddleware(next http.Handler) http.Handler {
 	})
 }
 
+func recoveryMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		defer func() {
+			if err := recover(); err != nil {
+				log.Printf("🔥 Panic Recovered: %v", err)
+				http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			}
+		}()
+		next.ServeHTTP(w, r)
+	})
+}
+
 func initDB() (*pgxpool.Pool, error) {
-	conn, err := pgxpool.New(context.Background(), os.Getenv("DATABASE_URL"))
-	if err != nil {
-		return nil, fmt.Errorf("failed to connect to database: %w", err)
+	var conn *pgxpool.Pool
+	var err error
+
+	for i := 0; i < 5; i++ {
+		conn, err = pgxpool.New(context.Background(), os.Getenv("DATABASE_URL"))
+		if err == nil {
+			fmt.Println("✅ Database connected successfully")
+			return conn, nil
+		}
+		fmt.Println("⏳ Retrying database connection...")
+		time.Sleep(2 * time.Second)
 	}
-	fmt.Println("✅ Database connected successfully")
-	return conn, nil
+
+	return nil, fmt.Errorf("failed to connect to database: %w", err)
 }
 
 func setupMiddleware(router *mux.Router) {
 	router.Use(securityMiddleware)
 	router.Use(corsMiddleware)
+	router.Use(recoveryMiddleware)
 }
 
 func main() {
-
-	clerk.SetKey(os.Getenv("CLERK_SECRET_KEY"))
 	if err := godotenv.Load(); err != nil {
 		log.Println("⚠️ Warning: .env file not found, using system environment variables.")
 	}
+
+	clerk.SetKey(os.Getenv("CLERK_SECRET_KEY")) // Digeser setelah godotenv.Load()
 
 	conn, err := initDB()
 	if err != nil {
@@ -84,9 +111,14 @@ func main() {
 	routes.RegisterStripeRoute(conn, router)
 	routes.RegisterAdminRoute(conn, router)
 
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080" // Default port jika tidak ada env
+	}
+
 	server := &http.Server{
 		Handler:      router,
-		Addr:         "127.0.0.1:"+os.Getenv("PORT"),
+		Addr:         ":" + port, // Listen ke semua interface
 		WriteTimeout: 20 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}
@@ -95,7 +127,7 @@ func main() {
 	signal.Notify(stop, os.Interrupt, syscall.SIGTERM)
 
 	go func() {
-		fmt.Println("🚀 Server is running on", server.Addr)
+		fmt.Println("🚀 Server is running on port", port)
 		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.Fatalf("❌ Server Error: %v", err)
 		}
@@ -111,3 +143,4 @@ func main() {
 	}
 	fmt.Println("✅ Server gracefully stopped")
 }
+
