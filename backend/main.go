@@ -89,9 +89,12 @@ func main() {
 
     router := mux.NewRouter().StrictSlash(true)
     setupMiddleware(router)
-    router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-        helper.EncodeResponse(w, "hello from server", nil)
-    })
+    
+    router.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+    w.WriteHeader(http.StatusOK)
+    w.Write([]byte("OK"))
+})
+
     routes.RegisterUserRoute(conn, router)
     routes.RegisterCloudinaryRoute(conn, router)
     routes.RegisterCarRoute(conn, router)
