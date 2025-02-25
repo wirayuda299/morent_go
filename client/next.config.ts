@@ -11,6 +11,10 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  env: {
+    CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
+    SIGNIN_SECRET: process.env.SIGNIN_SECRET,
+  },
 };
 
 export default nextConfig;
