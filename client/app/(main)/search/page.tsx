@@ -56,10 +56,10 @@ export default async function Search({ searchParams }: Props) {
   return (
     <div className="w-full p-4">
       <SearchByName />
-      {allCars.length === 0 && type && (
+      {allCars && allCars.length === 0 && type && (
         <p className="text-sm text-red-500">No car match with this type</p>
       )}
-      {allCars.length > 0 && type && (
+      {allCars && allCars.length > 0 && type && (
         <section className="">
           <p className="text-base text-gray-900 font-medium pt-4 pb-3">Search result :</p>
           <div className="flex flex-wrap w-full gap-5">
