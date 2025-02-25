@@ -6,7 +6,6 @@ import FavButton from "./fav-btn";
 import { formatPrice } from "@/utils";
 
 
-
 export default function CarCard({ car }: { car: Car }) {
   return (
     <div className="min-w-[300px] h-full max-w-[350px] shadow-md  bg-white rounded-md p-3 overflow-hidden">
@@ -74,7 +73,7 @@ export default function CarCard({ car }: { car: Car }) {
           </p>
           <Link
             href={`/car/${car.id}`}
-            className="bg-green-600 text-white-200 rounded-sm px-3 py-1 text-sm hover:bg-green-700"
+            className="bg-green-600 text-white rounded-sm px-3 py-1 text-sm hover:bg-green-700"
           >
             More info
           </Link>
