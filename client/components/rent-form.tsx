@@ -9,7 +9,7 @@ import { rentCar } from '@/serveractions/car';
 import { Button } from './ui/button';
 import { useRouter } from 'next/navigation';
 
-export default function RentForm({ carId }: { carId: string }) {
+export default function RentForm({ carId, owner}: { carId: string, owner:string }) {
   const { push } = useRouter();
   const handleSubmit = async (form: FormData) => {
     try {
@@ -21,7 +21,7 @@ export default function RentForm({ carId }: { carId: string }) {
         return;
       }
 
-      const res = await rentCar(carId, rentedStart, rentedEnd);
+      const res = await rentCar(carId, rentedStart, rentedEnd, owner);
       if (res && res.errors) {
         toast.message(res.errors);
       }

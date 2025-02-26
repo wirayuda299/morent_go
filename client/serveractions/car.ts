@@ -87,14 +87,17 @@ export async function rentCar(
   carId: string,
   rentedStart: string,
   rentedEnd: string,
+  owner:string,
 ) {
   const log = logger.child({ module: "rentCar" });
   log.info("Renting a car", { carId, rentedStart, rentedEnd });
 
   try {
-    if (!carId || !rentedStart || !rentedEnd) {
+    if (!carId || !rentedStart || !rentedEnd || !owner) {
       throw new Error('Car ID, Pickup date, or Return date is missing');
     }
+
+    
 
     if (!isValidDate(rentedStart) || !isValidDate(rentedEnd)) {
       throw new Error('Invalid date format');
@@ -121,6 +124,10 @@ export async function rentCar(
     const user = await currentUser();
     if (!user?.emailAddresses?.[0]?.emailAddress) {
       throw new Error('User email not found');
+    }
+
+    if (authData.userId === owner){
+      throw new Error("You can't rent your own car")
     }
 
     const response = await api.post(

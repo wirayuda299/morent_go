@@ -80,7 +80,7 @@ export default async function CarDetail({ params }: Props) {
 
           <div className='rounded-lg bg-gray-100 p-4'>
             <h2 className='mb-4 text-xl font-semibold'>Book Now</h2>
-            <RentForm carId={car[0].id} />
+            <RentForm carId={car[0].id} owner={car[0].owner}/>
           </div>
         </div>
       </div>
