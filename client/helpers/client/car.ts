@@ -1,5 +1,6 @@
-import { api } from "@/lib/axios";
-import { Car } from "@/types";
+import { api } from '@/lib/axios';
+import { logger } from '@/lib/logger';
+import { Car } from '@/types';
 
 type SearchPayload = {
   user_id: string;
@@ -12,10 +13,12 @@ type SearchPayload = {
 };
 
 export async function searchCar(payload: SearchPayload): Promise<Car[]> {
-  console.log("Search car");
+  const log = logger.child({ module: "searchCar" });
+  log.info("Searching for a car", { payload });
+  
   try {
     if (!payload.user_id) {
-      throw new Error("User ID is required");
+      throw new Error('User ID is required');
     }
 
     const params = new URLSearchParams({
@@ -29,11 +32,14 @@ export async function searchCar(payload: SearchPayload): Promise<Car[]> {
 
     const res = await api.get(`/car/search?${params.toString()}`, {
       headers: {
-        Authorization: "Bearer " + payload.token,
+        Authorization: 'Bearer ' + payload.token,
       },
     });
+    
+    log.info("Search results received", { data: res.data });
     return res.data;
-  } catch (e) {
-    throw e;
+  } catch (error) {
+    log.error("Error searching for car", { error });
+    throw error;
   }
 }

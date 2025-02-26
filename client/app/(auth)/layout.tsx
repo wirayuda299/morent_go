@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from 'next/image';
 
 export default function RootLayout({
   children,
@@ -6,17 +6,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="min-h-screen grid grid-cols-1 md:grid-cols-2 ">
+    <div className='grid min-h-screen grid-cols-1 md:grid-cols-2'>
       <Image
-        src={"/lambo.jpg"}
+        src={'/lambo.jpg'}
         width={500}
         height={500}
-        alt="lambo"
-        className="w-full h-full object-cover hidden md:block" />
-      <div className="flex items-center justify-center">
-        {children}
-
-      </div>
+        alt='lambo'
+        className='hidden h-full w-full object-cover md:block'
+      />
+      <div className='flex items-center justify-center'>{children}</div>
     </div>
   );
 }

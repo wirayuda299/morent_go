@@ -1,3 +1,3 @@
 export default function SuccessPafe() {
-  return "Success"
+  return 'Success';
 }

@@ -3,9 +3,9 @@ export const isValidDate = (dateString: string) => {
 };
 
 export const formatPrice = (price: number) => {
-  const formattedPrice = Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
+  const formattedPrice = Intl.NumberFormat('id-ID', {
+    style: 'currency',
+    currency: 'IDR',
   }).format(price);
 
   return formattedPrice;

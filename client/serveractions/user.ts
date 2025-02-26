@@ -1,35 +1,35 @@
-"use server";
+'use server';
 
-import { auth, clerkClient } from "@clerk/nextjs/server";
-import { revalidatePath } from "next/cache";
-import { z } from "zod";
+import { userSchema, UserSchema } from '@/validation';
+import { auth, clerkClient } from '@clerk/nextjs/server';
+import { revalidatePath } from 'next/cache';
+import { logger } from '@/lib/logger';
 
-const userSchema = z.object({
-  firstName: z.string().min(1, "First name is required"),
-  lastName: z.string().min(1, "Last name is required"),
-  username: z.string().min(3, "Username must be at least 3 characters"),
-});
 export interface ActionResponse {
   success: boolean;
   message: string;
   errors?: {
-    [K in keyof z.infer<typeof userSchema>]?: string[];
+    [K in keyof UserSchema]?: string[];
   };
 }
 
 export async function createUser(id: string) {
+  const log = logger.child({ module: 'createUser' });
+  log.info('Creating user', { id });
+
   try {
     await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/create`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "content-type": "application/json",
+        'content-type': 'application/json',
       },
       body: JSON.stringify({
         id,
       }),
     });
+    log.info('User created successfully');
   } catch (error) {
-    console.info(error);
+    log.error('Error creating user', { error });
     throw error;
   }
 }
@@ -38,10 +38,13 @@ export async function updateUser(
   prevState: ActionResponse | null,
   formData: FormData,
 ) {
+  const log = logger.child({ module: 'updateUser' });
+  log.info('Updating user', { formData });
+
   try {
-    const firstName = formData.get("firstName") as string;
-    const lastName = formData.get("lastName") as string;
-    const username = formData.get("username") as string;
+    const firstName = formData.get('firstName') as string;
+    const lastName = formData.get('lastName') as string;
+    const username = formData.get('username') as string;
 
     const data = {
       firstName,
@@ -51,32 +54,36 @@ export async function updateUser(
 
     const validatedData = userSchema.safeParse(data);
     if (!validatedData.success) {
+      log.warn('Validation failed', { errors: validatedData.error.flatten().fieldErrors });
       return {
         success: false,
-        message: "Please fix the errors in the form",
+        message: 'Please fix the errors in the form',
         errors: validatedData.error.flatten().fieldErrors,
       };
     }
     const { userId } = await auth();
     if (!userId) {
+      log.warn('Unauthorized user attempt');
       return {
         success: false,
-        message: "Unauthorized",
+        message: 'Unauthorized',
       };
     }
     const client = await clerkClient();
 
     await client.users.updateUser(userId!, validatedData.data);
-    revalidatePath("/profile");
+    revalidatePath('/profile');
+    log.info('User profile updated successfully');
     return {
       success: true,
-      message: "Profile updated successfully",
+      message: 'Profile updated successfully',
     };
   } catch (error) {
-    console.error("Update user error:", error);
+    log.error('Error updating user', { error });
     return {
       success: false,
-      message: "An unexpected error occurred. Please try again later.",
+      message: 'An unexpected error occurred. Please try again later.',
     };
   }
 }
+

@@ -1,53 +1,66 @@
-import { api } from "@/lib/axios";
-import { Car } from "@/types";
-import { auth } from "@clerk/nextjs/server";
-import { log } from "console";
 
-export async function getAllCars(sort: string = "popular") {
+import { auth } from '@clerk/nextjs/server';
+
+import { api } from '@/lib/axios';
+import { Car } from '@/types';
+import { logger } from '@/lib/logger';
+
+export async function getAllCars(sort: string = 'popular') {
+  const log = logger.child({ module: 'getAllCars' });
+  log.info('Fetching all cars', { sort });
+
   try {
     const { getToken, userId } = await auth();
     const res = await api.get<Car[]>(`/car/find-all/${userId}?sort=${sort}`, {
       headers: {
-        Authorization: "Bearer " + (await getToken()),
+        Authorization: 'Bearer ' + (await getToken()),
+      },
+      fetchOptions: {
+        cache: 'force-cache',
       },
     });
-    log("GET ALL CARS", res);
+    log.info('Fetched all cars successfully', { data: res.data });
     return res.data;
   } catch (error) {
+    log.error('Error fetching all cars', { error });
     throw error;
   }
 }
 
 export async function getAvailableCars() {
+  const log = logger.child({ module: 'getAvailableCars' });
+  log.info('Fetching available cars');
+
   try {
     const { getToken } = await auth();
     const res = await api.get<Car[]>(`/car/available-car`, {
       headers: {
-        Authorization: "Bearer " + (await getToken()),
+        Authorization: 'Bearer ' + (await getToken()),
       },
     });
-
-    log("GET AVAILABLE CARS", res);
+    log.info('Fetched available cars successfully', { data: res.data });
     return res.data;
   } catch (error) {
-    console.info(error);
+    log.error('Error fetching available cars', { error });
     throw error;
   }
 }
 
 export async function getFeaturedCategories() {
+  const log = logger.child({ module: 'getFeaturedCategories' });
+  log.info('Fetching featured categories');
+
   try {
     const { getToken } = await auth();
     const res = await api.get<string[]>(`/car/featured_categories`, {
       headers: {
-        Authorization: "Bearer " + (await getToken()),
+        Authorization: 'Bearer ' + (await getToken()),
       },
     });
-
-    log("GET FEATURED CATEGORIES", res);
+    log.info('Fetched featured categories successfully', { data: res.data });
     return res.data;
   } catch (error) {
-    console.info(error);
+    log.error('Error fetching featured categories', { error });
     throw error;
   }
 }
@@ -63,9 +76,12 @@ type SearchPayload = {
 };
 
 export async function searchCar(payload: SearchPayload): Promise<Car[]> {
+  const log = logger.child({ module: 'searchCar' });
+  log.info('Searching for cars', { payload });
+
   try {
     if (!payload.user_id) {
-      throw new Error("User ID is required");
+      throw new Error('User ID is required');
     }
 
     const params = new URLSearchParams({
@@ -79,14 +95,14 @@ export async function searchCar(payload: SearchPayload): Promise<Car[]> {
 
     const res = await api.get(`/car/search?${params.toString()}`, {
       headers: {
-        Authorization: "Bearer " + payload.token,
+        Authorization: 'Bearer ' + payload.token,
       },
     });
-
-    log("SEARCH CARS:" + params.toString(), res);
-
+    log.info('Search results retrieved successfully', { data: res.data });
     return res.data;
-  } catch (e) {
-    throw e;
+  } catch (error) {
+    log.error('Error searching for cars', { error });
+    throw error;
   }
 }
+

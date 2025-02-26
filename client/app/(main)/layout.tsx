@@ -1,5 +1,5 @@
-import Footer from "@/components/footer";
-import Navbar from "@/components/navbar";
+import Footer from '@/components/footer';
+import Navbar from '@/components/navbar';
 
 export default function RootLayout({
   children,
@@ -7,9 +7,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className=" bg-white-200 size-full">
+    <div className='size-full bg-white-200'>
       <Navbar />
-      <div className="bg-white-200 size-full p-3">
+      <div className='size-full bg-white-200 p-3'>
         {children}
         <Footer />
       </div>

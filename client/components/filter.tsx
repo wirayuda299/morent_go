@@ -1,7 +1,7 @@
-'use client'
+'use client';
 
-import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 import {
   Sidebar,
@@ -12,66 +12,70 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
-import { carFilterOptions } from "@/constants"
+} from '@/components/ui/sidebar';
+import { carFilterOptions } from '@/constants';
 
 export default function Filter() {
   const { push } = useRouter();
-  const [selectedValue, setSelectedValue] = useState<{ type: string | null; capacity: number | null }>({
+  const [selectedValue, setSelectedValue] = useState<{
+    type: string | null;
+    capacity: number | null;
+  }>({
     type: null,
-    capacity: null
+    capacity: null,
   });
 
-
   const handleTypeChange = (type: string) => {
-    setSelectedValue((prev) => ({
+    setSelectedValue(prev => ({
       type: prev.type === type ? null : type,
-      capacity: prev.capacity
+      capacity: prev.capacity,
     }));
-
   };
 
   const handleCapacityChange = (capacity: number) => {
-    setSelectedValue((prev) => ({
+    setSelectedValue(prev => ({
       type: prev.type,
-      capacity: prev.capacity === capacity ? null : capacity
+      capacity: prev.capacity === capacity ? null : capacity,
     }));
-
   };
 
   useEffect(() => {
     const params = new URLSearchParams();
 
-    if (selectedValue.type) params.append("type", selectedValue.type);
-    if (selectedValue.capacity !== null) params.append("capacity", selectedValue.capacity.toString());
+    if (selectedValue.type) params.append('type', selectedValue.type);
+    if (selectedValue.capacity !== null)
+      params.append('capacity', selectedValue.capacity.toString());
 
     if (selectedValue.type && selectedValue.capacity !== null) {
-      params.append("search_by", "type_cap");
+      params.append('search_by', 'type_cap');
     } else if (selectedValue.type) {
-      params.append("search_by", "type");
+      params.append('search_by', 'type');
     } else if (selectedValue.capacity !== null) {
-      params.append("search_by", "capacity");
+      params.append('search_by', 'capacity');
     }
 
     push(`/search?${params.toString()}`);
   }, [selectedValue, push]);
 
-
   return (
-    <Sidebar className="mt-14">
+    <Sidebar className='mt-14'>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className="text-sm">Type</SidebarGroupLabel>
+          <SidebarGroupLabel className='text-sm'>Type</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {carFilterOptions.type.map((item) => (
+              {carFilterOptions.type.map(item => (
                 <SidebarMenuItem key={item.key}>
                   <SidebarMenuButton asChild>
                     <div>
                       <input
-                        type="checkbox"
-                        onChange={() => handleTypeChange(item.label.toLowerCase())}
-                        checked={selectedValue.type === item.label.toLowerCase()}
+                        type='checkbox'
+                        onChange={() =>
+                          handleTypeChange(item.label.toLowerCase())
+                        }
+                        checked={
+                          selectedValue.type === item.label.toLowerCase()
+                        }
                       />
                       <span>{item.label}</span>
                     </div>
@@ -83,17 +87,21 @@ export default function Filter() {
         </SidebarGroup>
 
         <SidebarGroup>
-          <SidebarGroupLabel className="text-sm">Capacity</SidebarGroupLabel>
+          <SidebarGroupLabel className='text-sm'>Capacity</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {carFilterOptions.capacity.map((item) => (
+              {carFilterOptions.capacity.map(item => (
                 <SidebarMenuItem key={item.key}>
                   <SidebarMenuButton asChild>
                     <div>
                       <input
-                        type="checkbox"
-                        onChange={() => handleCapacityChange(parseInt(item.label))}
-                        checked={selectedValue.capacity === parseInt(item.label)}
+                        type='checkbox'
+                        onChange={() =>
+                          handleCapacityChange(parseInt(item.label))
+                        }
+                        checked={
+                          selectedValue.capacity === parseInt(item.label)
+                        }
                       />
                       <span>{item.label}</span>
                     </div>
@@ -107,4 +115,3 @@ export default function Filter() {
     </Sidebar>
   );
 }
-

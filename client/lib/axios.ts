@@ -1,29 +1,26 @@
-import axios from "axios";
+import axios from 'axios';
 
 export const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000",
+  baseURL: process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000',
   withCredentials: true,
   headers: {
-    "Content-Type": "application/json",
-    Accept: "application/json",
-  },
-  params: {
-    t: new Date().getTime(),
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
   },
 });
 
 api.interceptors.response.use(
-  (response) => {
+  response => {
     if (response.data && response.data.success === false) {
       return Promise.reject({
-        message: response.data.message || "An error occurred.",
+        message: response.data.message || 'An error occurred.',
         success: response.data.success,
         data: response.data.data,
       });
     }
     return response.data;
   },
-  (error) => {
+  error => {
     if (error.response) {
       const { status, data } = error.response;
       const errorMessage =
@@ -35,8 +32,15 @@ api.interceptors.response.use(
       });
     }
     return Promise.reject({
-      message: "Network error or no response received.",
+      message: 'Network error or no response received.',
       originalError: error,
     });
   },
 );
+
+// Export a type for the API responses
+export type ApiResponse<T = any> = {
+  data: T;
+  success: boolean;
+  message?: string;
+};
