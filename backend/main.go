@@ -52,7 +52,7 @@ func initDB() (*pgxpool.Pool, error) {
         return nil, fmt.Errorf("failed to parse database config: %w", err)
     }
 
-    config.MaxConns = 20 // Adjust based on load
+    config.MaxConns = 100 // Adjust based on load
     config.MinConns = 2
     config.MaxConnIdleTime = time.Minute * 5
     config.HealthCheckPeriod = time.Minute
@@ -90,8 +90,9 @@ func main() {
     setupMiddleware(router)
     
     router.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+    port := os.Getenv("PORT") // Ambil port dari environment variable
+    fmt.Println("Request received on:", port)
     w.WriteHeader(http.StatusOK)
-    w.Write([]byte("OK"))
 })
 
     routes.RegisterUserRoute(conn, router)
@@ -105,7 +106,6 @@ func main() {
         Addr:         ":" + os.Getenv("PORT"),
         WriteTimeout: 20 * time.Second,
         ReadTimeout:  15 * time.Second,
-        IdleTimeout:  60 * time.Second, // Set Idle timeout
     }
 
     go func() {
