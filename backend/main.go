@@ -90,7 +90,7 @@ func main() {
     setupMiddleware(router)
     
     router.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
-    port := os.Getenv("PORT") // Ambil port dari environment variable
+    port := os.Getenv("PORT") 
     fmt.Println("Request received on:", port)
     w.WriteHeader(http.StatusOK)
 })

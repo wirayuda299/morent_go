@@ -178,7 +178,6 @@ func GetAllCars(conn *pgxpool.Pool, w http.ResponseWriter, r *http.Request, user
 		helper.WriteErrorResponse(w, "You must be signed in to access this page", http.StatusUnauthorized)
 		return
 	}
-
 	sort := r.URL.Query().Get("sort")
 
 	var queryBuilder strings.Builder
