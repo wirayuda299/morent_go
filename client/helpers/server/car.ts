@@ -1,10 +1,10 @@
 
 import { auth } from '@clerk/nextjs/server';
-import { api } from '@/lib/axios';
-import { Car } from '@/types';
-import { logger } from '@/lib/logger';
 
-// Fungsi untuk mendapatkan token & userId sekali saja
+import { api } from '@/lib/axios';
+import { logger } from '@/lib/logger';
+import { Car } from '@/types';
+
 async function getAuthData() {
   const { getToken, userId } = await auth();
   return {
