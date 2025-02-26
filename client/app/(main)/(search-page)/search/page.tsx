@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic';
 
 import { auth } from '@clerk/nextjs/server';
 
@@ -15,6 +14,13 @@ type Props = {
     search_by: string;
   }>;
 };
+
+export const metadata={
+  title:"Search car"
+}
+
+export const dynamic = 'force-dynamic';
+
 export default async function Search({ searchParams }: Props) {
   const type = (await searchParams).type || null;
   const capacity = (await searchParams).capacity || null;
@@ -48,8 +54,6 @@ export default async function Search({ searchParams }: Props) {
   } else {
     allCars = await getAllCars('all');
   }
-  console.log({ type, capacity, searchBy });
-
   return (
     <div className='w-full p-4'>
       <SearchByName />

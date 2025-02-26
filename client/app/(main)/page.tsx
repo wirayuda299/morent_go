@@ -6,13 +6,14 @@ import { HOME_HEADERS } from '@/constants';
 import { getAllCars, getFeaturedCategories } from '@/helpers/server/car';
 import { Button } from '@/components/ui/button';
 import FeatureCarCard from '@/components/feature-car-card';
+import Footer from '@/components/footer';
 
 export default async function Home() {
   const cars = await getAllCars();
   const categories = await getFeaturedCategories();
 
   return (
-    <main className='h-full w-full bg-white p-2'>
+    <main className='h-full w-full bg-white'>
       <header className='flex justify-center gap-4 text-white'>
         {HOME_HEADERS.map((header, i) => (
           <div
@@ -21,6 +22,7 @@ export default async function Home() {
           >
             <div className='aspect-w-16 aspect-h-9 relative overflow-hidden rounded-lg'>
               <Image
+                fetchPriority='high'
                 className='bject-cover min-h-[232px] w-full lg:min-h-[360px]'
                 src={header.background}
                 alt='Blue background with car'
@@ -103,6 +105,7 @@ export default async function Home() {
           </Button>
         </div>
       </section>
+      <Footer/>
     </main>
   );
 }

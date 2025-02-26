@@ -1,13 +1,14 @@
 import { Car, Clock } from 'lucide-react';
-import { Card, CardContent } from '../ui/card';
-import { Badge } from '@/components/ui/badge';
-import { GetUserRecentBooking } from '@/helpers/server/users';
-import { formatPrice } from '@/utils';
-import { TabsContent } from '../ui/tabs';
 import Link from 'next/link';
 
+import { Card, CardContent } from '../ui/card';
+import { Badge } from '@/components/ui/badge';
+import { formatPrice } from '@/utils';
+import { TabsContent } from '../ui/tabs';
+import { getUserRecentBooking } from '@/helpers/server/users';
+
 export default async function RecentBookings() {
-  const recentBookings = await GetUserRecentBooking();
+  const recentBookings = await getUserRecentBooking();
 
   return (
     <TabsContent value={'bookings'} className='w-full space-y-4'>

@@ -1,7 +1,9 @@
-import { carCategories } from '@/constants';
 import { ChevronRightIcon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+
+import { carCategories } from '@/constants';
+
 
 export default function FeatureCarCard({ category }: { category: string }) {
   return (
@@ -13,6 +15,7 @@ export default function FeatureCarCard({ category }: { category: string }) {
               carCategories.find(c => c.name === category)?.icon ||
               '/placeholder.svg'
             }
+            priority
             alt={category}
             fill
             className='transition-all duration-300 group-hover:opacity-75'

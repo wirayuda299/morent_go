@@ -12,6 +12,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarRail,
 } from '@/components/ui/sidebar';
 import { carFilterOptions } from '@/constants';
 
@@ -112,6 +113,7 @@ export default function Filter() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+            <SidebarRail/>
     </Sidebar>
   );
 }

@@ -1,25 +1,27 @@
 
 import { auth } from '@clerk/nextjs/server';
-
 import { api } from '@/lib/axios';
 import { Car } from '@/types';
 import { logger } from '@/lib/logger';
+
+// Fungsi untuk mendapatkan token & userId sekali saja
+async function getAuthData() {
+  const { getToken, userId } = await auth();
+  return {
+    userId,
+    headers: {
+      Authorization: 'Bearer ' + (await getToken()),
+    },
+  };
+}
 
 export async function getAllCars(sort: string = 'popular') {
   const log = logger.child({ module: 'getAllCars' });
   log.info('Fetching all cars', { sort });
 
   try {
-    const { getToken, userId } = await auth();
-    const res = await api.get<Car[]>(`/car/find-all/${userId}?sort=${sort}`, {
-      headers: {
-        Authorization: 'Bearer ' + (await getToken()),
-      },
-      fetchOptions: {
-        cache: 'force-cache',
-      },
-    });
-    log.info('Fetched all cars successfully', { data: res.data });
+    const { userId, headers } = await getAuthData();
+    const res = await api.get<Car[]>(`/car/find-all/${userId}?sort=${sort}`, { headers });
     return res.data;
   } catch (error) {
     log.error('Error fetching all cars', { error });
@@ -32,13 +34,8 @@ export async function getAvailableCars() {
   log.info('Fetching available cars');
 
   try {
-    const { getToken } = await auth();
-    const res = await api.get<Car[]>(`/car/available-car`, {
-      headers: {
-        Authorization: 'Bearer ' + (await getToken()),
-      },
-    });
-    log.info('Fetched available cars successfully', { data: res.data });
+    const { headers } = await getAuthData();
+    const res = await api.get<Car[]>(`/car/available-car`, { headers });
     return res.data;
   } catch (error) {
     log.error('Error fetching available cars', { error });
@@ -51,13 +48,9 @@ export async function getFeaturedCategories() {
   log.info('Fetching featured categories');
 
   try {
-    const { getToken } = await auth();
-    const res = await api.get<string[]>(`/car/featured_categories`, {
-      headers: {
-        Authorization: 'Bearer ' + (await getToken()),
-      },
-    });
-    log.info('Fetched featured categories successfully', { data: res.data });
+    const { headers } = await getAuthData();
+    const res = await api.get<string[]>(`/car/featured_categories`, { headers });
+    
     return res.data;
   } catch (error) {
     log.error('Error fetching featured categories', { error });
@@ -86,19 +79,17 @@ export async function searchCar(payload: SearchPayload): Promise<Car[]> {
 
     const params = new URLSearchParams({
       user_id: payload.user_id,
-      ...(payload.name ? { name: payload.name } : {}),
-      ...(payload.capacity ? { capacity: payload.capacity } : {}),
-      ...(payload.type ? { type: payload.type } : {}),
-      ...(payload.carId && { id: payload.carId }),
       search_by: payload.search_by,
+      ...(payload.name && { name: payload.name }),
+      ...(payload.capacity && { capacity: payload.capacity }),
+      ...(payload.type && { type: payload.type }),
+      ...(payload.carId && { id: payload.carId }),
     });
 
-    const res = await api.get(`/car/search?${params.toString()}`, {
-      headers: {
-        Authorization: 'Bearer ' + payload.token,
-      },
+    const res = await api.get<Car[]>(`/car/search?${params.toString()}`, {
+      headers: { Authorization: 'Bearer ' + payload.token },
     });
-    log.info('Search results retrieved successfully', { data: res.data });
+
     return res.data;
   } catch (error) {
     log.error('Error searching for cars', { error });

@@ -22,7 +22,7 @@ export default async function ProfilePage() {
   const totalRentals = await getUserTotalRental();
 
   return (
-    <div className='container mx-auto min-h-screen space-y-8'>
+    <div className='container mx-auto min-h-screen space-y-8 p-3'>
       <div className='flex w-full flex-col items-start gap-8 md:flex-row'>
         <Card className='w-full md:w-[300px]'>
           <CardHeader className='text-center'>

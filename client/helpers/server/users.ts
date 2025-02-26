@@ -1,69 +1,56 @@
-
 import { auth } from '@clerk/nextjs/server';
 
 import { api } from '@/lib/axios';
 import { logger } from '@/lib/logger';
 
-export async function getAllUsers() {
-  const log = logger.child({ module: 'getAllUsers' });
-  log.info('Fetching all users');
+async function getAuthHeaders() {
+  const { getToken, userId } = await auth();
+  return {
+    userId,
+    headers: {
+      Authorization: 'Bearer ' + (await getToken()),
+    },
+  };
+}
+
+async function fetchUserData<T>(endpoint: string, module: string): Promise<T> {
+  const log = logger.child({ module });
+  log.info(`Fetching ${module}`);
 
   try {
-    const users = await api.get('/users/find-all');
-    log.info('GET ALL USERS', { users: users.data });
-    return users;
+    const { headers } = await getAuthHeaders();
+    const res = await api.get<T>(endpoint, { headers });
+
+    log.info(`${module} fetched successfully`);
+    return res.data;
   } catch (error) {
-    log.error('Error fetching all users', { error });
+    log.error(`Error fetching ${module}`, { error });
     throw error;
   }
 }
 
-export async function getUserTotalRental() {
-  const log = logger.child({ module: 'getUserTotalRental' });
-  log.info('Fetching user total rental');
+export async function getAllUsers() {
+  return fetchUserData('/users/find-all', 'getAllUsers');
+}
 
-  try {
-    const { userId, getToken } = await auth();
-    const users = await api.get(`/users/total-rentals?userId=${userId}`, {
-      headers: {
-        Authorization: 'Bearer ' + (await getToken()),
-      },
-    });
-    log.info('GET USER TOTAL RENTAL', { users: users.data });
-    return users.data;
-  } catch (error) {
-    log.error('Error fetching user total rental', { error });
-    throw error;
-  }
+export async function getUserTotalRental() {
+  const { userId } = await getAuthHeaders();
+  return fetchUserData<number>(`/users/total-rentals?userId=${userId}`, 'getUserTotalRental');
+}
+
+export async function getUserRecentBooking(): Promise<Rental[]> {
+  const { userId } = await getAuthHeaders();
+  return fetchUserData<Rental[]>(`/users/recent-booking?userId=${userId}`, 'getUserRecentBooking');
 }
 
 type Rental = {
   car_id: string;
   car_name: string;
-  pickup_date: string; // Bisa dijadikan Date jika ingin otomatis parsing
+  pickup_date: string;
   rental_id: string;
-  return_date: string; // Bisa dijadikan Date juga
-  status: 'pending' | 'paid' | 'canceled'; // Sesuai dengan kemungkinan status
+  return_date: string;
+  status: 'pending' | 'paid' | 'canceled';
   total_price: number;
   user_id: string;
 };
-
-export async function GetUserRecentBooking(): Promise<Rental[]> {
-  const log = logger.child({ module: 'GetUserRecentBooking' });
-  log.info('Fetching user recent booking');
-
-  try {
-    const { userId, getToken } = await auth();
-    const res = await api.get('/users/recent-booking?userId=' + userId, {
-      headers: {
-        Authorization: 'Bearer ' + (await getToken()),
-      },
-    });
-    log.info('GET USER RECENT BOOKING', { bookings: res.data });
-    return res.data;
-  } catch (error) {
-    log.error('Error fetching user recent booking', { error });
-    throw error;
-  }
-}
 

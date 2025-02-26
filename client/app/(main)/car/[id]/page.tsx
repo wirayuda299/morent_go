@@ -30,6 +30,8 @@ export default async function CarDetail({ params }: Props) {
         <div className='space-y-4'>
           <div className='relative h-64 w-full md:h-96'>
             <Image
+              priority
+              fetchPriority='high'
               src={car[0].thumbnails[0].url}
               alt='Car main image'
               fill
@@ -44,6 +46,8 @@ export default async function CarDetail({ params }: Props) {
                   src={thumbnail.url}
                   alt='Car image 1'
                   width={150}
+                  priority
+                  fetchPriority='high'
                   height={100}
                   className='rounded-lg'
                 />
