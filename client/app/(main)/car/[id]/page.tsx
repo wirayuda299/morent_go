@@ -3,8 +3,8 @@ import { Cog, FuelIcon, User2Icon } from 'lucide-react';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 
-import { searchCar } from '@/helpers/client/car';
 import RentForm from '@/components/rent-form';
+import { searchCar } from '@/helpers/client/car';
 
 type Props = {
   params: Promise<{
@@ -25,7 +25,7 @@ export default async function CarDetail({ params }: Props) {
   if (car.length < 1) notFound();
 
   return (
-    <div className='container mx-auto'>
+    <div className='container mx-auto p-3'>
       <div className='grid grid-cols-1 gap-8 md:grid-cols-2'>
         <div className='space-y-4'>
           <div className='relative h-64 w-full md:h-96'>

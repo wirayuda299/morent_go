@@ -21,7 +21,7 @@ async function fetchUserData<T>(endpoint: string, module: string): Promise<T> {
     const { headers } = await getAuthHeaders();
     const res = await api.get<T>(endpoint, { headers });
 
-    log.info(`${module} fetched successfully`);
+    log.info(`${module} fetched successfully`, res);
     return res.data;
   } catch (error) {
     log.error(`Error fetching ${module}`, { error });

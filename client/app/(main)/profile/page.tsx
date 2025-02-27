@@ -1,7 +1,9 @@
-import { Suspense } from 'react';
-import { currentUser } from '@clerk/nextjs/server';
 import { Car, LogOut, User } from 'lucide-react';
 
+import RecentBookings from '@/components/profile/recent-bookings';
+import PersonalInfoForm from '@/components/profile/update-form';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -11,11 +13,8 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
 import { getUserTotalRental } from '@/helpers/server/users';
-import RecentBookings from '@/components/profile/recent-bookings';
-import PersonalInfoForm from '@/components/profile/update-form';
+import { currentUser } from '@clerk/nextjs/server';
 
 export default async function ProfilePage() {
   const user = await currentUser();
@@ -69,9 +68,7 @@ export default async function ProfilePage() {
               <TabsTrigger value='settings'>Settings</TabsTrigger>
             </TabsList>
 
-            <Suspense fallback='Loading recent bookings'>
               <RecentBookings />
-            </Suspense>
 
             <PersonalInfoForm
               username={user?.username || ''}
