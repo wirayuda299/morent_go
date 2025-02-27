@@ -404,7 +404,6 @@ func SearchCars(conn *pgxpool.Pool, w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-
 func GetFeaturedCategories(conn *pgxpool.Pool, w http.ResponseWriter, r *http.Request) {
 	var categories []string
 
@@ -428,7 +427,6 @@ func GetFeaturedCategories(conn *pgxpool.Pool, w http.ResponseWriter, r *http.Re
 		categories = append(categories, carType)
 	}
 
-	// If we have less than 4 categories, fetch more from "car"
 	if len(categories) < 4 {
 		needed := 4 - len(categories) // How many more categories we need
 
@@ -455,4 +453,3 @@ func GetFeaturedCategories(conn *pgxpool.Pool, w http.ResponseWriter, r *http.Re
 
 	helper.EncodeResponse(w, "Featured categories", categories)
 }
-
