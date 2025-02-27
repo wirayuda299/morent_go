@@ -9,7 +9,13 @@ import { useRouter } from 'next/navigation';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 
-export default function RentForm({ carId, owner}: { carId: string, owner:string }) {
+export default function RentForm({
+  carId,
+  owner,
+}: {
+  carId: string;
+  owner: string;
+}) {
   const { push } = useRouter();
 
   const handleSubmit = async (form: FormData) => {
@@ -25,7 +31,7 @@ export default function RentForm({ carId, owner}: { carId: string, owner:string 
       const res = await rentCar(carId, rentedStart, rentedEnd, owner);
       if (res && res.errors) {
         toast.message(res.errors);
-        return 
+        return;
       }
 
       push(res);
@@ -69,15 +75,15 @@ export default function RentForm({ carId, owner}: { carId: string, owner:string 
               about=''
               id='return-date'
               name='rentedEnd'
-              className="w-full appearance-none rounded border px-3 py-2 pr-10 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className='w-full appearance-none rounded border px-3 py-2 pr-10 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500'
             />
             <CalendarIcon className='absolute right-2 top-2.5 h-5 w-5 text-gray-400' />
           </div>
         </div>
       </div>
-        <Button className='inline-block w-full rounded bg-black p-2 text-center text-sm text-white disabled:cursor-not-allowed'>
-          Checkout
-        </Button>
+      <Button className='inline-block w-full rounded bg-black p-2 text-center text-sm text-white disabled:cursor-not-allowed'>
+        Checkout
+      </Button>
     </Form>
   );
 }

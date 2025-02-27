@@ -1,4 +1,3 @@
-
 import { auth } from '@clerk/nextjs/server';
 
 import { api } from '@/lib/axios';
@@ -21,7 +20,9 @@ export async function getAllCars(sort: string = 'popular') {
 
   try {
     const { userId, headers } = await getAuthData();
-    const res = await api.get<Car[]>(`/car/find-all/${userId}?sort=${sort}`, { headers });
+    const res = await api.get<Car[]>(`/car/find-all/${userId}?sort=${sort}`, {
+      headers,
+    });
     return res.data;
   } catch (error) {
     log.error('Error fetching all cars', { error });
@@ -49,8 +50,10 @@ export async function getFeaturedCategories() {
 
   try {
     const { headers } = await getAuthData();
-    const res = await api.get<string[]>(`/car/featured_categories`, { headers });
-    
+    const res = await api.get<string[]>(`/car/featured_categories`, {
+      headers,
+    });
+
     return res.data;
   } catch (error) {
     log.error('Error fetching featured categories', { error });
@@ -96,4 +99,3 @@ export async function searchCar(payload: SearchPayload): Promise<Car[]> {
     throw error;
   }
 }
-

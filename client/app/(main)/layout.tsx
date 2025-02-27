@@ -8,7 +8,7 @@ export default function RootLayout({
   return (
     <div className='size-full bg-white-200'>
       <Navbar />
-        {children}
+      {children}
     </div>
   );
 }

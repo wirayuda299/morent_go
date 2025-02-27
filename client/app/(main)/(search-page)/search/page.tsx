@@ -1,4 +1,3 @@
-
 import { auth } from '@clerk/nextjs/server';
 
 import CarCard from '@/components/car-card';
@@ -15,9 +14,9 @@ type Props = {
   }>;
 };
 
-export const metadata={
-  title:"Search car"
-}
+export const metadata = {
+  title: 'Search car',
+};
 
 export const dynamic = 'force-dynamic';
 

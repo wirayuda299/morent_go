@@ -15,8 +15,7 @@ const nextConfig: NextConfig = {
     CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
     SIGNING_SECRET: process.env.SIGNING_SECRET,
   },
-  serverExternalPackages:["pino", "pino-pretty"]
- 
+  serverExternalPackages: ['pino', 'pino-pretty'],
 };
 
 export default nextConfig;

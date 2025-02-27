@@ -7,11 +7,11 @@ import { redirect } from 'next/navigation';
 import { api } from '@/lib/axios';
 import { AddCarSchemaType } from '@/validation';
 import { isValidDate } from '@/utils';
-import { logger } from "@/lib/logger";
+import { logger } from '@/lib/logger';
 
 export async function addNewCar(data: AddCarSchemaType, thumbnails: any[]) {
-  const log = logger.child({ module: "addNewCar" });
-  log.info("Adding a new car", { data, thumbnails });
+  const log = logger.child({ module: 'addNewCar' });
+  log.info('Adding a new car', { data, thumbnails });
 
   try {
     const { userId, getToken } = await auth();
@@ -43,18 +43,18 @@ export async function addNewCar(data: AddCarSchemaType, thumbnails: any[]) {
       },
     );
 
-    log.info("Car added successfully");
+    log.info('Car added successfully');
     revalidatePath('/');
     redirect('/');
   } catch (error) {
-    log.error("Error adding new car", { error });
+    log.error('Error adding new car', { error });
     throw error;
   }
 }
 
 export async function addOrremoveCarFromFav(carId: string) {
-  const log = logger.child({ module: "addOrRemoveCarFromFav" });
-  log.info("Toggling favorite car", { carId });
+  const log = logger.child({ module: 'addOrRemoveCarFromFav' });
+  log.info('Toggling favorite car', { carId });
 
   try {
     const { userId, getToken } = await auth();
@@ -75,10 +75,10 @@ export async function addOrremoveCarFromFav(carId: string) {
       },
     );
 
-    log.info("Successfully toggled favorite car");
+    log.info('Successfully toggled favorite car');
     revalidatePath('/');
   } catch (error) {
-    log.error("Error toggling favorite car", { error });
+    log.error('Error toggling favorite car', { error });
     throw error;
   }
 }
@@ -87,17 +87,15 @@ export async function rentCar(
   carId: string,
   rentedStart: string,
   rentedEnd: string,
-  owner:string,
+  owner: string,
 ) {
-  const log = logger.child({ module: "rentCar" });
-  log.info("Renting a car", { carId, rentedStart, rentedEnd });
+  const log = logger.child({ module: 'rentCar' });
+  log.info('Renting a car', { carId, rentedStart, rentedEnd });
 
   try {
     if (!carId || !rentedStart || !rentedEnd || !owner) {
       throw new Error('Car ID, Pickup date, or Return date is missing');
     }
-
-    
 
     if (!isValidDate(rentedStart) || !isValidDate(rentedEnd)) {
       throw new Error('Invalid date format');
@@ -126,8 +124,8 @@ export async function rentCar(
       throw new Error('User email not found');
     }
 
-    if (authData.userId === owner){
-      throw new Error("You can't rent your own car")
+    if (authData.userId === owner) {
+      throw new Error("You can't rent your own car");
     }
 
     const response = await api.post(
@@ -145,14 +143,13 @@ export async function rentCar(
         },
       },
     );
-    
-    log.info("Car rented successfully", { url: response.data.url });
+
+    log.info('Car rented successfully', { url: response.data.url });
     return response.data.url;
   } catch (error) {
-    log.error("Error renting car", { error });
+    log.error('Error renting car', { error });
     return {
       errors: (error as Error).message,
     };
   }
 }
-

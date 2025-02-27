@@ -4,7 +4,6 @@ import Link from 'next/link';
 
 import { carCategories } from '@/constants';
 
-
 export default function FeatureCarCard({ category }: { category: string }) {
   return (
     <Link href='/search' className='group'>

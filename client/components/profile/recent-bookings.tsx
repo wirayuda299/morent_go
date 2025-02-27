@@ -5,7 +5,14 @@ import { Badge } from '@/components/ui/badge';
 import { getUserRecentBooking } from '@/helpers/server/users';
 import { formatPrice } from '@/utils';
 import { Button } from '../ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '../ui/card';
 import { TabsContent } from '../ui/tabs';
 
 export default async function RecentBookings() {
@@ -13,42 +20,43 @@ export default async function RecentBookings() {
 
   return (
     <TabsContent value={'bookings'} className='w-full space-y-4'>
-      {!recentBookings  ? (
-    <>
-        <Card className="border-dashed">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-xl">No recent bookings</CardTitle>
-            <CardDescription>You haven&apos;t made any car rental bookings yet.</CardDescription>
-          </CardHeader>
-          <CardContent className="flex flex-col items-center justify-center py-10">
-            <div className="rounded-full bg-muted p-6 mb-6">
-              <CalendarX className="h-12 w-12 text-muted-foreground" />
-            </div>
-            <div className="max-w-md text-center space-y-4">
-              <h3 className="text-lg font-medium">Ready to hit the road?</h3>
-              <p className="text-sm text-muted-foreground">
-                Explore our wide selection of vehicles and find the perfect car for your next adventure.
-              </p>
-            </div>
-          </CardContent>
-          <CardFooter className="flex flex-col sm:flex-row gap-4 pt-0">
-            <Button asChild className="w-full sm:w-auto">
-              <Link href="/search">
-                <Search className="mr-2 h-4 w-4" />
-                Search Cars
-              </Link>
-            </Button>
-            <Button variant="outline" asChild className="w-full sm:w-auto">
-              <Link href="/">
-                <Car className="mr-2 h-4 w-4" />
-                View Popular Cars
-              </Link>
-            </Button>
-          </CardFooter>
-        </Card>
-
-    </>
-
+      {!recentBookings ? (
+        <>
+          <Card className='border-dashed'>
+            <CardHeader className='pb-3'>
+              <CardTitle className='text-xl'>No recent bookings</CardTitle>
+              <CardDescription>
+                You haven&apos;t made any car rental bookings yet.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className='flex flex-col items-center justify-center py-10'>
+              <div className='mb-6 rounded-full bg-muted p-6'>
+                <CalendarX className='h-12 w-12 text-muted-foreground' />
+              </div>
+              <div className='max-w-md space-y-4 text-center'>
+                <h3 className='text-lg font-medium'>Ready to hit the road?</h3>
+                <p className='text-sm text-muted-foreground'>
+                  Explore our wide selection of vehicles and find the perfect
+                  car for your next adventure.
+                </p>
+              </div>
+            </CardContent>
+            <CardFooter className='flex flex-col gap-4 pt-0 sm:flex-row'>
+              <Button asChild className='w-full sm:w-auto'>
+                <Link href='/search'>
+                  <Search className='mr-2 h-4 w-4' />
+                  Search Cars
+                </Link>
+              </Button>
+              <Button variant='outline' asChild className='w-full sm:w-auto'>
+                <Link href='/'>
+                  <Car className='mr-2 h-4 w-4' />
+                  View Popular Cars
+                </Link>
+              </Button>
+            </CardFooter>
+          </Card>
+        </>
       ) : (
         <>
           <h2 className='mb-4 text-2xl font-bold'>Recent Bookings</h2>

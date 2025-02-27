@@ -113,7 +113,7 @@ export default function Filter() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-            <SidebarRail/>
+      <SidebarRail />
     </Sidebar>
   );
 }

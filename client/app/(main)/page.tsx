@@ -13,8 +13,8 @@ export default async function Home() {
   const categories = await getFeaturedCategories();
 
   return (
-    <main className='h-full w-full bg-white'>
-      <header className='flex justify-center gap-4 text-white'>
+    <main className='h-full w-full bg-white p-3'>
+      <header className='flex w-full justify-center gap-4 text-white'>
         {HOME_HEADERS.map((header, i) => (
           <div
             className={`group relative ${i === 1 ? 'hidden sm:block' : ''}`}
@@ -73,37 +73,39 @@ export default async function Home() {
         </section>
       )}
 
-<section className='w-full bg-white py-16'>
-  <div className='container mx-auto px-4'>
-    <h2 className='mb-8 text-center text-3xl font-bold'>Why Choose Us</h2>
-    <div className='grid grid-cols-1 gap-8 md:grid-cols-3'>
-      {[
-        {
-          title: 'Extensive Vehicle Selection',
-          icon: CarIcon,
-          description: 'Choose from a wide range of high-quality vehicles to match your needs and budget.',
-        },
-        {
-          title: 'Best Price Guarantee',
-          icon: SearchIcon,
-          description: 'Get competitive rates with no hidden fees—transparent pricing you can trust.',
-        },
-        {
-          title: '24/7 Customer Support',
-          icon: CalendarIcon,
-          description: 'Our support team is available around the clock to assist you whenever needed.',
-        },
-      ].map((feature, index) => (
-        <div key={index} className='text-center'>
-          <feature.icon className='mx-auto mb-4 h-12 w-12 text-blue-600' />
-          <h3 className='mb-2 text-xl font-semibold'>{feature.title}</h3>
-          <p className='text-gray-600'>{feature.description}</p>
+      <section className='w-full bg-white py-16'>
+        <div className='container mx-auto px-4'>
+          <h2 className='mb-8 text-center text-3xl font-bold'>Why Choose Us</h2>
+          <div className='grid grid-cols-1 gap-8 md:grid-cols-3'>
+            {[
+              {
+                title: 'Extensive Vehicle Selection',
+                icon: CarIcon,
+                description:
+                  'Choose from a wide range of high-quality vehicles to match your needs and budget.',
+              },
+              {
+                title: 'Best Price Guarantee',
+                icon: SearchIcon,
+                description:
+                  'Get competitive rates with no hidden fees—transparent pricing you can trust.',
+              },
+              {
+                title: '24/7 Customer Support',
+                icon: CalendarIcon,
+                description:
+                  'Our support team is available around the clock to assist you whenever needed.',
+              },
+            ].map((feature, index) => (
+              <div key={index} className='text-center'>
+                <feature.icon className='mx-auto mb-4 h-12 w-12 text-blue-600' />
+                <h3 className='mb-2 text-xl font-semibold'>{feature.title}</h3>
+                <p className='text-gray-600'>{feature.description}</p>
+              </div>
+            ))}
+          </div>
         </div>
-      ))}
-    </div>
-  </div>
-</section>
-
+      </section>
 
       <section className='w-full bg-blue-600 py-16 text-white'>
         <div className='container mx-auto px-4 text-center'>
@@ -116,7 +118,7 @@ export default async function Home() {
           </Button>
         </div>
       </section>
-      <Footer/>
+      <Footer />
     </main>
   );
 }

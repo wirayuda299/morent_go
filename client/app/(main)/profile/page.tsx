@@ -68,7 +68,7 @@ export default async function ProfilePage() {
               <TabsTrigger value='settings'>Settings</TabsTrigger>
             </TabsList>
 
-              <RecentBookings />
+            <RecentBookings />
 
             <PersonalInfoForm
               username={user?.username || ''}

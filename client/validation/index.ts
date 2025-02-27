@@ -60,7 +60,7 @@ export const userSchema = z.object({
   username: z.string().min(3, 'Username must be at least 3 characters'),
 });
 
-export type UserSchema= z.infer<typeof userSchema>
+export type UserSchema = z.infer<typeof userSchema>;
 export type SearchSchemaType = z.infer<typeof searchSchema>;
 export type SearchByNameSchemaType = z.infer<typeof searchByNameSchema>;
 export type AddCarSchemaType = z.infer<typeof addCarSchema>;

@@ -3,7 +3,6 @@ import { Header } from '@/components/dashboard/header';
 import { Stats } from '@/components/dashboard/stats';
 import { getAvailableCars } from '@/helpers/server/car';
 
-
 export const dynamic = 'force-dynamic';
 
 export default async function DashboardPage() {
@@ -20,7 +19,7 @@ export default async function DashboardPage() {
               Welcome to your car rental dashboard
             </p>
           </div>
-            <Stats />
+          <Stats />
 
           {availableCars.length > 0 && (
             <div>

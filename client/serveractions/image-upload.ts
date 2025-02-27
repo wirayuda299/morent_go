@@ -25,4 +25,3 @@ export async function uploadImage(formData: FormData) {
     throw error;
   }
 }
-

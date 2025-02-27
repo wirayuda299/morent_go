@@ -35,12 +35,18 @@ export async function getAllUsers() {
 
 export async function getUserTotalRental() {
   const { userId } = await getAuthHeaders();
-  return fetchUserData<number>(`/users/total-rentals?userId=${userId}`, 'getUserTotalRental');
+  return fetchUserData<number>(
+    `/users/total-rentals?userId=${userId}`,
+    'getUserTotalRental',
+  );
 }
 
 export async function getUserRecentBooking(): Promise<Rental[]> {
   const { userId } = await getAuthHeaders();
-  return fetchUserData<Rental[]>(`/users/recent-booking?userId=${userId}`, 'getUserRecentBooking');
+  return fetchUserData<Rental[]>(
+    `/users/recent-booking?userId=${userId}`,
+    'getUserRecentBooking',
+  );
 }
 
 type Rental = {
@@ -53,4 +59,3 @@ type Rental = {
   total_price: number;
   user_id: string;
 };
-

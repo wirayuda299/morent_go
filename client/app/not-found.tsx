@@ -16,8 +16,8 @@ export default function NotFound() {
           Page not found
         </h2>
         <p className='mb-8 text-muted-foreground'>
-          Sorry, we couldn&apos;t find the page you&apos;re looking for. The page might
-          have been moved, deleted, or never existed.
+          Sorry, we couldn&apos;t find the page you&apos;re looking for. The
+          page might have been moved, deleted, or never existed.
         </p>
         <Button asChild size='lg' className='gap-2'>
           <Link href='/'>

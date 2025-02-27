@@ -13,9 +13,9 @@ type SearchPayload = {
 };
 
 export async function searchCar(payload: SearchPayload): Promise<Car[]> {
-  const log = logger.child({ module: "searchCar" });
-  log.info("Searching for a car", { payload });
-  
+  const log = logger.child({ module: 'searchCar' });
+  log.info('Searching for a car', { payload });
+
   try {
     if (!payload.user_id) {
       throw new Error('User ID is required');
@@ -35,11 +35,11 @@ export async function searchCar(payload: SearchPayload): Promise<Car[]> {
         Authorization: 'Bearer ' + payload.token,
       },
     });
-    
-    log.info("Search results received", { data: res.data });
+
+    log.info('Search results received', { data: res.data });
     return res.data;
   } catch (error) {
-    log.error("Error searching for car", { error });
+    log.error('Error searching for car', { error });
     throw error;
   }
 }

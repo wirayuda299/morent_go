@@ -1,7 +1,7 @@
 import { auth } from '@clerk/nextjs/server';
 
 import { api } from '@/lib/axios';
-import { logger } from "@/lib/logger";
+import { logger } from '@/lib/logger';
 
 async function getAuthHeaders() {
   const { getToken, sessionClaims } = await auth();
@@ -18,7 +18,7 @@ async function fetchAdminData(endpoint: string, module: string) {
   try {
     const headers = await getAuthHeaders();
     const res = await api.get(endpoint, { headers });
-    
+
     log.info(`${module} fetched successfully`);
     return res.data;
   } catch (error) {
@@ -38,4 +38,3 @@ export async function getActiveRentals() {
 export async function getTotalCustomers() {
   return fetchAdminData('/admin/total-customers', 'getTotalCustomers');
 }
-

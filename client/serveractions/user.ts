@@ -54,7 +54,9 @@ export async function updateUser(
 
     const validatedData = userSchema.safeParse(data);
     if (!validatedData.success) {
-      log.warn('Validation failed', { errors: validatedData.error.flatten().fieldErrors });
+      log.warn('Validation failed', {
+        errors: validatedData.error.flatten().fieldErrors,
+      });
       return {
         success: false,
         message: 'Please fix the errors in the form',
@@ -86,4 +88,3 @@ export async function updateUser(
     };
   }
 }
-

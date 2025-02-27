@@ -39,6 +39,6 @@ coverage/
 .idea/
 *.swp
 *.swo
-temp 
+tmp 
 air.toml
 
