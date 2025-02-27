@@ -13,7 +13,7 @@ export default async function Home() {
   const categories = await getFeaturedCategories();
 
   return (
-    <main className='h-full w-full bg-white p-3'>
+    <main className='h-full !w-full bg-white p-3'>
       <header className='flex w-full justify-center gap-4 text-white'>
         {HOME_HEADERS.map((header, i) => (
           <div

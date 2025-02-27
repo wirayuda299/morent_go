@@ -1,4 +1,4 @@
-import Navbar from '@/components/navbar';
+import Navbar from '@/components/navbar/navbar';
 
 export default function RootLayout({
   children,
@@ -6,7 +6,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className='size-full bg-white-200'>
+    <div className='!w-full bg-white-200'>
       <Navbar />
       {children}
     </div>

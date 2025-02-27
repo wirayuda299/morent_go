@@ -2,12 +2,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { Car } from '@/types';
-import FavButton from './fav-btn';
 import { formatPrice } from '@/utils';
+import FavButton from './fav-btn';
 
 export default function CarCard({ car }: { car: Car }) {
   return (
-    <div className='h-full min-w-[300px] max-w-[350px] overflow-hidden rounded-md bg-white p-3 shadow-md'>
+    <div className='h-full max-w-[350px] overflow-hidden rounded-md bg-white p-3 shadow-md'>
       <header className='flex items-center justify-between'>
         <div>
           <h3 className='text-base font-semibold capitalize'>{car.name}</h3>

@@ -1,9 +1,9 @@
-import type { Metadata } from 'next';
 import { Toaster } from '@/components/ui/sonner';
 
 import './globals.css';
 
 import { ClerkProvider } from '@clerk/nextjs';
+import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: {
@@ -22,7 +22,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang='en'>
-        <body className=''>
+        <body className='!w-full'>
           {children}
           <Toaster />
         </body>
