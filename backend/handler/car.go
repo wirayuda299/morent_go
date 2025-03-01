@@ -1,9 +1,6 @@
 package handler
 
 import (
-	"backend/constant"
-	"backend/helper"
-	"backend/middleware"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -11,6 +8,10 @@ import (
 	"net/http"
 	"strings"
 	"time"
+
+	"backend/constant"
+	"backend/helper"
+	"backend/middleware"
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
@@ -56,7 +57,6 @@ func addCarToFavorite(conn *pgxpool.Pool, w http.ResponseWriter, r *http.Request
 	}
 
 	_, err := conn.Exec(r.Context(), "insert into favorite_car(user_id, car_id) values($1,$2)", userId, carId)
-
 	if err != nil {
 		helper.WriteErrorResponse(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -72,9 +72,7 @@ func removeCarFromFavorite(conn *pgxpool.Pool, w http.ResponseWriter, r *http.Re
 		helper.WriteErrorResponse(w, "You must be signed in to access this page", http.StatusUnauthorized)
 		return
 	}
-
 	_, err := conn.Exec(r.Context(), "delete from favorite_car where user_id = $1 and car_id = $2", userId, carId)
-
 	if err != nil {
 		helper.WriteErrorResponse(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -92,7 +90,6 @@ func AddOrRemoveCarFromFavorite(conn *pgxpool.Pool, w http.ResponseWriter, r *ht
 	}
 
 	body, err := io.ReadAll(r.Body)
-
 	if err != nil {
 		helper.WriteErrorResponse(w, err.Error(), http.StatusBadRequest)
 		return
@@ -100,7 +97,6 @@ func AddOrRemoveCarFromFavorite(conn *pgxpool.Pool, w http.ResponseWriter, r *ht
 	var favoriteCar FavoriteCar
 
 	err = json.Unmarshal(body, &favoriteCar)
-
 	if err != nil {
 		helper.WriteErrorResponse(w, err.Error(), http.StatusBadRequest)
 		return
@@ -212,7 +208,6 @@ func GetAllCars(conn *pgxpool.Pool, w http.ResponseWriter, r *http.Request, user
 			&car.Description, &car.City, &car.Country, &car.StreetAddress, &car.FuelTankSize,
 			&car.Transmission, &car.Features, &thumbnailsJSON, &car.IsFavorite,
 		)
-
 		if err != nil {
 			helper.WriteErrorResponse(w, "Failed to scan car data: "+err.Error(), http.StatusInternalServerError)
 			return
@@ -230,6 +225,7 @@ func GetAllCars(conn *pgxpool.Pool, w http.ResponseWriter, r *http.Request, user
 		helper.WriteErrorResponse(w, "Error during row iteration", http.StatusInternalServerError)
 		return
 	}
+	w.Header().Set("Cache-Control", "public, max-age=3600")
 
 	helper.EncodeResponse(w, "All cars have been fetched", allCars)
 }
@@ -264,7 +260,6 @@ func GetAvailableCar(conn *pgxpool.Pool, w http.ResponseWriter, r *http.Request)
       where c.rented_by is null
       group by c.id
 		`)
-
 	if err != nil {
 		helper.WriteErrorResponse(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -291,6 +286,7 @@ func GetAvailableCar(conn *pgxpool.Pool, w http.ResponseWriter, r *http.Request)
 		availableCars = append(availableCars, car)
 	}
 
+	w.Header().Set("Cache-Control", "public, max-age=3600")
 	if len(availableCars) == 0 {
 		helper.EncodeResponse(w, "No cars found", []Car{})
 	} else {
@@ -397,6 +393,7 @@ func SearchCars(conn *pgxpool.Pool, w http.ResponseWriter, r *http.Request) {
 		searchResults = append(searchResults, car)
 	}
 
+	w.Header().Set("Cache-Control", "public, max-age=3600")
 	if len(searchResults) == 0 {
 		helper.EncodeResponse(w, "No cars found", []Car{})
 	} else {
@@ -451,5 +448,6 @@ func GetFeaturedCategories(conn *pgxpool.Pool, w http.ResponseWriter, r *http.Re
 		}
 	}
 
+	w.Header().Set("Cache-Control", "public, max-age=3600")
 	helper.EncodeResponse(w, "Featured categories", categories)
 }
