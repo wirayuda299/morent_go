@@ -1,22 +1,23 @@
-import { CalendarIcon, CarIcon, SearchIcon } from "lucide-react";
-import Image from "next/image";
+import { CalendarIcon, CarIcon, SearchIcon } from 'lucide-react';
+import { Suspense } from 'react';
+import Image from 'next/image';
 
-import CarCard from "@/components/car-card";
-import FeatureCarCard from "@/components/feature-car-card";
-import Footer from "@/components/footer";
-import { Button } from "@/components/ui/button";
-import { HOME_HEADERS } from "@/constants";
-import { getAllCars, getFeaturedCategories } from "@/helpers/server/car";
+import Footer from '@/components/footer';
+import { Button } from '@/components/ui/button';
+import { HOME_HEADERS } from '@/constants';
+import CarCardSkeleton from '@/components/car-card/skeleton';
+import FeaturedCarList from '@/components/feature-card-list';
+import PopularCar from '@/components/popular-cars';
 
-export default async function Home() {
-  const cars = await getAllCars();
-  const categories = await getFeaturedCategories();
-
+export default function Home() {
   return (
     <main className='h-full !w-full bg-white p-3'>
       <header className='flex w-full justify-center gap-4 text-white'>
         {HOME_HEADERS.map((header, i) => (
-          <div className={`group relative ${i === 1 ? "hidden sm:block" : ""}`} key={header.title1}>
+          <div
+            className={`group relative ${i === 1 ? 'hidden sm:block' : ''}`}
+            key={header.title1}
+          >
             <div className='aspect-w-16 aspect-h-9 relative overflow-hidden rounded-lg'>
               <Image
                 fetchPriority='high'
@@ -42,27 +43,46 @@ export default async function Home() {
           </div>
         ))}
       </header>
-      {categories && categories.length > 0 && (
-        <section className='w-full bg-gray-100 py-16'>
-          <div className='container mx-auto px-4'>
-            <h2 className='mb-8 text-center text-3xl font-bold'>Featured Categories</h2>
-            <div className='grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4'>
-              {categories?.map(category => <FeatureCarCard category={category} key={category} />)}
-            </div>
-          </div>
-        </section>
-      )}
+<section className='w-full bg-gray-100 py-16'>
+      <div className='container mx-auto px-4'>
+        <h2 className='mb-8 text-center text-3xl font-bold'>
+          Featured Categories
+        </h2>
 
-      {cars && cars?.length > 0 && (
-        <section className='w-full bg-white-200 py-16'>
-          <div className='container mx-auto px-4'>
-            <h2 className='mb-8 text-center text-3xl font-bold'>Featured Cars</h2>
-            <div className='grid grid-cols-1 gap-8 md:grid-cols-3'>
-              {cars?.map(car => <CarCard key={car.id} car={car} />)}
-            </div>
+<Suspense
+        fallback={
+          <div className='my-10 flex flex-wrap gap-3'>
+            {Array.from({ length: 4 }).map((_, i) => (
+              <CarCardSkeleton key={i} />
+            ))}
           </div>
-        </section>
-      )}
+        }
+      >
+        <FeaturedCarList />
+      </Suspense>
+
+             </div>
+    </section>
+
+      
+<section className='w-full bg-white-200 py-16'>
+      <div className='container mx-auto px-4'>
+        <h2 className='mb-8 text-center text-3xl font-bold'>Featured Cars</h2>
+      <Suspense
+        fallback={
+          <div className='flex flex-wrap gap-3'>
+            {Array.from({ length: 4 }).map((_, i) => (
+              <CarCardSkeleton key={i} />
+            ))}
+          </div>
+        }
+      >
+        <PopularCar />
+      </Suspense>
+
+
+              </div>
+    </section>
 
       <section className='w-full bg-white py-16'>
         <div className='container mx-auto px-4'>
@@ -70,22 +90,22 @@ export default async function Home() {
           <div className='grid grid-cols-1 gap-8 md:grid-cols-3'>
             {[
               {
-                title: "Extensive Vehicle Selection",
+                title: 'Extensive Vehicle Selection',
                 icon: CarIcon,
                 description:
-                  "Choose from a wide range of high-quality vehicles to match your needs and budget.",
+                  'Choose from a wide range of high-quality vehicles to match your needs and budget.',
               },
               {
-                title: "Best Price Guarantee",
+                title: 'Best Price Guarantee',
                 icon: SearchIcon,
                 description:
-                  "Get competitive rates with no hidden fees—transparent pricing you can trust.",
+                  'Get competitive rates with no hidden fees—transparent pricing you can trust.',
               },
               {
-                title: "24/7 Customer Support",
+                title: '24/7 Customer Support',
                 icon: CalendarIcon,
                 description:
-                  "Our support team is available around the clock to assist you whenever needed.",
+                  'Our support team is available around the clock to assist you whenever needed.',
               },
             ].map((feature, index) => (
               <div key={index} className='text-center'>
@@ -101,7 +121,9 @@ export default async function Home() {
       <section className='w-full bg-blue-600 py-16 text-white'>
         <div className='container mx-auto px-4 text-center'>
           <h2 className='mb-4 text-3xl font-bold'>Ready to Hit the Road?</h2>
-          <p className='mb-8 text-xl'>Book your perfect car today and start your adventure!</p>
+          <p className='mb-8 text-xl'>
+            Book your perfect car today and start your adventure!
+          </p>
           <Button size='lg' className='bg-white text-blue-600 hover:bg-blue-50'>
             Book Now
           </Button>

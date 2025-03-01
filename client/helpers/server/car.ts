@@ -21,10 +21,10 @@ export async function getAllCars(sort: string = 'popular') {
   try {
     const { userId, headers } = await getAuthData();
     const res = await api.get<Car[]>(`/car/find-all/${userId}?sort=${sort}`, {
-     headers,
-      fetchOptions:{
-        cache:'force-cache'
-      }
+      headers,
+      fetchOptions: {
+        cache: 'force-cache',
+      },
     });
     return res.data;
   } catch (error) {
